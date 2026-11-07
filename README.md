@@ -8,7 +8,7 @@ deep purple with bright neon on `slate` (dark), pale lavender with the same
 hues deepened for contrast on `default` (light). Colours only, no layout
 changes – except for an optional animated hero on the start page (see below).
 
-![Demo: the neon hero on the start page](.github/screencast.gif)
+![Demo: the start page with the neon hero, scrolling into the content and switching between the dark and the light scheme](.github/screencast.gif)
 
 Zensical has no installable third-party themes. What it has is `custom_dir`,
 a folder of template overrides that may also carry assets. This repo is such
