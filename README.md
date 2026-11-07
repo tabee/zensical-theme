@@ -1,11 +1,11 @@
 # zensical-theme
 
-Neon (cyberpunk) colours for [Zensical](https://zensical.org/): header with
-a pink → purple → cyan gradient, gradient headings, cyan links that glow pink
-on hover. Two variants that follow Zensical's colour scheme: deep purple with
-bright neon on `slate` (dark), pale lavender with the same hues deepened for
-contrast on `default` (light). Colours only, no layout changes – except for
-an optional animated hero on the start page (see below).
+Neon (cyberpunk) colours for [Zensical](https://zensical.org/): a glass
+header with a pink → purple → cyan hairline, gradient headings, cyan links
+that glow pink on hover. Two variants that follow Zensical's colour scheme:
+deep purple with bright neon on `slate` (dark), pale lavender with the same
+hues deepened for contrast on `default` (light). Colours only, no layout
+changes – except for an optional animated hero on the start page (see below).
 
 ![Demo: the neon hero on the start page](.github/screencast.gif)
 
@@ -81,6 +81,7 @@ That already gives you the animation with `site_name` as title and
 ```yaml
 ---
 hero:
+  eyebrow: Field notes          # optional, small label above the title
   title: My notes               # default site_name
   text: One sentence about it.  # default site_description
   attractor: aizawa             # default aizawa (the sphere); see below
@@ -89,6 +90,10 @@ hero:
       href: start/              # relative to the site root, or absolute
 ---
 ```
+
+The title wraps where it has to. If it contains a hyphen that should not
+become a line break, write it as a non-breaking hyphen (`‑`, U+2011), as the
+example page does.
 
 What moves: a [strange attractor](https://en.wikipedia.org/wiki/Attractor#Strange_attractor),
 drawn with [Three.js](https://threejs.org/) as a dim violet thread with a few

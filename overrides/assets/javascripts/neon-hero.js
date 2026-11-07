@@ -362,19 +362,25 @@ function start(section) {
     camera.updateProjectionMatrix();
     const halfHeight = Math.tan((camera.fov * Math.PI) / 360) * camera.position.z;
     const halfWidth = halfHeight * camera.aspect;
+    // Pixel rows of the section -> world y (centre 0, top +halfHeight).
+    const worldY = (px) => halfHeight * (1 - (2 * px) / h);
+    const top = section.getBoundingClientRect().top;
+    const innerRect = inner ? inner.getBoundingClientRect() : null;
     if (wide.matches) {
-      // Wide layout: attractor right of the text, a bit above centre.
-      group.position.set(halfWidth * 0.5, 0.08, 0);
+      // Wide layout: attractor right of the text, a bit above its centre
+      // (the text sits below the header's slice of the hero).
+      const centrePx = innerRect ? innerRect.top - top + innerRect.height / 2 : h / 2;
+      group.position.set(halfWidth * 0.5, worldY(centrePx) + 0.08, 0);
       group.scale.setScalar(Math.min(1, halfWidth * 0.42));
     } else {
-      // Narrow layout: attractor centred in the free space below the text
-      // (the CSS reserves it via padding-bottom on the hero).
-      const innerBottom = inner
-        ? inner.getBoundingClientRect().bottom - section.getBoundingClientRect().top
-        : h * 0.5;
-      const topPx = Math.min(Math.max(innerBottom, 0), h);
-      const regionHalf = ((h - topPx) / h) * halfHeight;
-      group.position.set(0, halfHeight * (1 - (topPx + h) / h), 0);
+      // Narrow layout: attractor centred in the free space between the text
+      // and the fade at the lower edge (CSS reserves it via padding-bottom
+      // on the hero, the fade is the ::after pseudo-element).
+      const fade = parseFloat(getComputedStyle(section, "::after").height) || 0;
+      const topPx = Math.min(Math.max(innerRect ? innerRect.bottom - top : h * 0.5, 0), h);
+      const bottomPx = Math.max(topPx, h - fade);
+      const regionHalf = ((bottomPx - topPx) / h) * halfHeight;
+      group.position.set(0, worldY((topPx + bottomPx) / 2), 0);
       group.scale.setScalar(Math.max(0.3, Math.min(0.85 * halfWidth, 0.9 * regionHalf)));
     }
     if (reduced) composer.render();

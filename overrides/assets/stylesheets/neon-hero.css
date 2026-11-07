@@ -1,16 +1,25 @@
 /* zensical-theme: neon hero on the start page (partials/neon-hero.html).
-   Rendered above md-main, full width. Colours come from neon.css (per colour
-   scheme); only the hero background and the button text colour are set here.
-   The canvas (neon-hero.js) reads the scheme from the body and follows it. */
+   Rendered above md-main, full width, running underneath the glass header.
+   Colours come from neon.css (per colour scheme); only the hero background,
+   the button text colour and the backdrop tints are set here. The canvas
+   (neon-hero.js) reads the scheme from the body and follows it. */
 .neon-hero {
   --neon-hero-bg: #fbf9ff;
   --neon-hero-fg: var(--md-default-fg-color);
   --neon-hero-button-fg: #ffffff;
   --neon-hero-shade: rgb(109 40 217 / 12%);
+  --neon-hero-dot: rgb(109 40 217 / 16%);
+  --neon-hero-glow-a: rgb(214 0 127 / 10%);
+  --neon-hero-glow-b: rgb(0 136 163 / 10%);
   position: relative;
+  display: grid;
   overflow: hidden;
-  min-height: min(calc(100vh - 2.4rem), 44rem);
+  /* The header is 2.4rem tall and translucent: start underneath it. */
+  margin-top: -2.4rem;
+  padding-top: 2.4rem;
+  min-height: min(100vh, 46rem);
   color: var(--neon-hero-fg);
+  /* Only visible without WebGL; the canvas paints its own background. */
   background:
     radial-gradient(ellipse 70% 60% at 68% 45%, var(--neon-hero-shade), transparent 70%),
     var(--neon-hero-bg);
@@ -20,21 +29,14 @@
   --neon-hero-bg: #07040f;
   --neon-hero-button-fg: #07040f;
   --neon-hero-shade: rgb(157 77 255 / 18%);
+  --neon-hero-dot: rgb(157 77 255 / 22%);
+  --neon-hero-glow-a: rgb(255 43 214 / 14%);
+  --neon-hero-glow-b: rgb(0 229 255 / 10%);
 }
 
 /* The hero carries the title; the page's own first heading would repeat it. */
 .neon-hero ~ .md-main .md-content__inner > h1:first-of-type {
   display: none;
-}
-
-/* Thin gradient line as the edge towards the content. */
-.neon-hero::after {
-  content: "";
-  position: absolute;
-  inset: auto 0 0;
-  height: 2px;
-  background: var(--neon-gradient);
-  box-shadow: 0 0 18px var(--neon-glow);
 }
 
 .neon-hero__canvas {
@@ -45,53 +47,137 @@
   height: 100%;
 }
 
+/* Atmosphere on top of the canvas: a dot grid behind the text and two soft
+   colour glows that tie the palette across the whole width. */
+.neon-hero__backdrop {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.neon-hero__backdrop::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, var(--neon-hero-dot) 1px, transparent 1.5px);
+  background-size: 26px 26px;
+  -webkit-mask-image: radial-gradient(ellipse 55% 70% at 22% 55%, #000 10%, transparent 70%);
+  mask-image: radial-gradient(ellipse 55% 70% at 22% 55%, #000 10%, transparent 70%);
+}
+
+.neon-hero__backdrop::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(45% 45% at 8% 20%, var(--neon-hero-glow-a), transparent 70%),
+    radial-gradient(40% 50% at 92% 90%, var(--neon-hero-glow-b), transparent 70%);
+}
+
+/* Soft landing into the page, closed by a hairline in the neon gradient.
+   neon-hero.js reads the height to keep the attractor above the fade. */
+.neon-hero::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 6rem;
+  background: linear-gradient(to bottom, transparent, var(--md-default-bg-color));
+  border-bottom: 1px solid transparent;
+  border-image: var(--neon-gradient) 1;
+  pointer-events: none;
+}
+
 .neon-hero__inner {
   position: relative;
   z-index: 1;
   display: grid;
   align-content: center;
-  min-height: inherit;
+  min-height: 0;
   padding: 4rem 1.2rem 5rem;
 }
 
-/* Two classes: Material's palette colours "[data-md-color-scheme] h1". */
+.neon-hero__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: fit-content;
+  margin: 0 0 1.4rem;
+  padding: 0.3rem 0.8rem 0.3rem 0.6rem;
+  border: 1px solid var(--neon-rule);
+  border-radius: 999px;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--neon-cyan);
+  background: color-mix(in srgb, var(--neon-hero-bg) 50%, transparent);
+}
+
+.neon-hero__eyebrow::before {
+  content: "";
+  flex: none;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 50%;
+  background: var(--neon-pink);
+  box-shadow: 0 0 10px var(--neon-pink);
+  animation: neon-hero-pulse 2.4s ease-in-out infinite;
+}
+
+/* Two classes: Material's palette colours "[data-md-color-scheme] h1".
+   fit-content lets the gradient span the text, not the column, so the run
+   from pink to cyan is actually visible. drop-shadow (not text-shadow) is
+   what works together with background-clip: text. */
 .neon-hero .neon-hero__title {
-  margin: 0 0 1rem;
-  font-size: clamp(2.2rem, 6.5vw, 4.4rem);
+  width: fit-content;
+  max-width: 100%;
+  margin: 0 0 1.2rem;
+  font-size: clamp(2.2rem, 6.4vw, 4.4rem);
   font-weight: 800;
-  line-height: 1.02;
-  letter-spacing: -0.02em;
-  background: var(--neon-gradient);
+  line-height: 0.98;
+  letter-spacing: -0.035em;
+  text-wrap: balance;
+  background: linear-gradient(100deg, var(--neon-pink) 0%, var(--neon-purple) 55%, var(--neon-cyan) 100%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+  filter: drop-shadow(0 0 28px var(--neon-text-glow));
 }
 
 .neon-hero__text {
-  max-width: 34rem;
-  margin: 0 0 2rem;
-  font-size: clamp(1rem, 2.2vw, 1.3rem);
-  line-height: 1.5;
+  max-width: 30rem;
+  margin: 0 0 2.2rem;
+  font-size: clamp(0.95rem, 1.5vw, 1.15rem);
+  line-height: 1.6;
   color: var(--neon-hero-fg);
-  opacity: 0.85;
+  opacity: 0.8;
+  text-wrap: pretty;
 }
 
 .neon-hero__buttons {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.8rem;
+  gap: 0.7rem;
   margin: 0;
 }
 
 .neon-hero__button {
-  display: inline-block;
-  padding: 0.7rem 1.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  padding: 0.75rem 1.5rem;
   border: 1px solid var(--neon-rule);
   border-radius: 999px;
+  font-size: 0.75rem;
   font-weight: 700;
+  letter-spacing: 0.01em;
   color: var(--neon-hero-fg);
   text-decoration: none;
-  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+  background: color-mix(in srgb, var(--neon-hero-bg) 40%, transparent);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, filter 0.2s ease;
 }
 
 .neon-hero__button:hover,
@@ -99,20 +185,64 @@
   color: var(--neon-hero-fg);
   border-color: var(--neon-cyan);
   box-shadow: 0 0 20px var(--neon-glow);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 .neon-hero__button--primary {
   border-color: transparent;
   background: var(--neon-gradient);
   color: var(--neon-hero-button-fg);
-  box-shadow: 0 0 24px var(--neon-text-glow);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 10%), 0 8px 30px -8px var(--neon-text-glow);
+}
+
+.neon-hero__button--primary::after {
+  content: "→" / "";
+  transition: transform 0.2s ease;
 }
 
 .neon-hero__button--primary:hover,
 .neon-hero__button--primary:focus-visible {
   color: var(--neon-hero-button-fg);
-  box-shadow: 0 0 32px var(--neon-text-glow);
+  filter: brightness(1.1);
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 15%), 0 12px 40px -8px var(--neon-text-glow);
+}
+
+.neon-hero__button--primary:hover::after,
+.neon-hero__button--primary:focus-visible::after {
+  transform: translateX(3px);
+}
+
+/* Staggered entrance: eyebrow, title, text, buttons. */
+.neon-hero__inner > * {
+  animation: neon-hero-rise 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.neon-hero__inner > :nth-child(2) { animation-delay: 0.08s; }
+.neon-hero__inner > :nth-child(3) { animation-delay: 0.16s; }
+.neon-hero__inner > :nth-child(4) { animation-delay: 0.24s; }
+
+@keyframes neon-hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes neon-hero-pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.55;
+    transform: scale(0.8);
+  }
 }
 
 /* Wide screens: text on the left, the attractor is placed to the right by
@@ -125,21 +255,50 @@
 
 /* Narrow screens: text on top, the attractor gets the space below it. The
    bottom padding reserves that space; the script centres the attractor in
-   whatever is left between the text and the lower edge. */
+   whatever is left between the text and the fade at the lower edge. */
 @media (max-width: 59.9375em) {
   .neon-hero {
     padding-bottom: 16rem;
   }
 
   .neon-hero__inner {
+    align-self: start;
     align-content: start;
-    min-height: 0;
     padding: 3rem 1.2rem 0;
+  }
+
+  .neon-hero__buttons {
+    gap: 0.6rem;
+  }
+
+  .neon-hero__button {
+    padding: 0.7rem 1.1rem;
+  }
+
+  .neon-hero::after {
+    height: 3rem;
+  }
+
+  .neon-hero__backdrop::before {
+    -webkit-mask-image: radial-gradient(ellipse 90% 45% at 50% 20%, #000 10%, transparent 70%);
+    mask-image: radial-gradient(ellipse 90% 45% at 50% 20%, #000 10%, transparent 70%);
+  }
+
+  .neon-hero__backdrop::after {
+    background:
+      radial-gradient(60% 35% at 0% 5%, var(--neon-hero-glow-a), transparent 70%),
+      radial-gradient(60% 40% at 100% 100%, var(--neon-hero-glow-b), transparent 70%);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .neon-hero__button {
+  .neon-hero__inner > *,
+  .neon-hero__eyebrow::before {
+    animation: none;
+  }
+
+  .neon-hero__button,
+  .neon-hero__button--primary::after {
     transition: none;
   }
 }

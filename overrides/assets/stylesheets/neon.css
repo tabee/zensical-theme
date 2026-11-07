@@ -48,11 +48,22 @@
   --md-typeset-a-color: var(--neon-cyan);
 }
 
+/* Header: a tinted glass bar, hairline gradient as the lower edge. Zensical's
+   modern variant already blurs what scrolls underneath; the tint keeps that.
+   Without backdrop-filter the bar stays opaque instead of see-through. */
 .md-header {
   background: var(--neon-header-bg);
-  border-bottom: 2px solid transparent;
+  border-bottom: 1px solid transparent;
   border-image: var(--neon-gradient) 1;
-  box-shadow: 0 0 18px var(--neon-glow);
+  box-shadow: none;
+}
+
+@supports ((-webkit-backdrop-filter: blur(1px)) or (backdrop-filter: blur(1px))) {
+  .md-header {
+    background: color-mix(in srgb, var(--neon-header-bg) 72%, transparent);
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+    backdrop-filter: blur(16px) saturate(150%);
+  }
 }
 
 .md-typeset h1 {

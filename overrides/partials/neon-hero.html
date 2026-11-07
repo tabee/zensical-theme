@@ -3,6 +3,7 @@
   page (key "hero"), falling back to site_name and site_description:
 
     hero:
+      eyebrow: Field notes       # optional, small label above the title
       title: My notes            # optional, default site_name
       text: One line about it.   # optional, default site_description
       attractor: aizawa          # optional, default aizawa (the sphere). Also: thomas,
@@ -19,7 +20,11 @@
 {% if attractor is not string %}{% set attractor = attractor | join(",") %}{% endif %}
 <section class="neon-hero" data-attractor="{{ attractor }}">
   <canvas class="neon-hero__canvas" aria-hidden="true"></canvas>
+  <div class="neon-hero__backdrop" aria-hidden="true"></div>
   <div class="neon-hero__inner md-grid">
+    {% if hero.eyebrow %}
+      <p class="neon-hero__eyebrow">{{ hero.eyebrow }}</p>
+    {% endif %}
     <h1 class="neon-hero__title">{{ hero.title | default(config.site_name) }}</h1>
     {% set text = hero.text | default(config.site_description) %}
     {% if text %}

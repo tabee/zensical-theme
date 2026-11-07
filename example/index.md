@@ -1,6 +1,7 @@
 ---
 hero:
-  title: zensical-theme
+  eyebrow: Theme for Zensical
+  title: zensical‑theme
   text: Neon colours for Zensical. Deep purple, pink to cyan, and a strange attractor on the start page.
   buttons:
     - text: Read the README
