@@ -7,6 +7,8 @@ bright neon on `slate` (dark), pale lavender with the same hues deepened for
 contrast on `default` (light). Colours only, no layout changes – except for
 an optional animated hero on the start page (see below).
 
+![Demo: the neon hero on the start page](.github/screencast.gif)
+
 Zensical has no installable third-party themes. What it has is `custom_dir`,
 a folder of template overrides that may also carry assets. This repo is such
 a folder: `overrides/main.html` appends one style sheet to Zensical's own,
