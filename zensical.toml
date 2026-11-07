@@ -1,5 +1,5 @@
 # Preview site for zensical-theme. Run from the repo root:
-#   zensical serve
+#   uvx zensical serve
 # Your own project only needs the [project.theme] part below (README).
 [project]
 site_name = "zensical-theme"

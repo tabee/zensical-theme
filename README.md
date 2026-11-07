@@ -110,9 +110,12 @@ files stay out of every other page.
 ## Preview
 
 ```bash
-pip install zensical
-zensical serve          # uses zensical.toml and example/ in this repo
+uvx zensical serve      # uses zensical.toml and example/ in this repo
 ```
+
+[`uvx`](https://docs.astral.sh/uv/guides/tools/) runs Zensical in a throwaway
+environment, nothing is installed into your Python. Classic way:
+`pip install zensical && zensical serve`.
 
 ## Updates
 
