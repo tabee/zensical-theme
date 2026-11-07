@@ -50,11 +50,10 @@
 
 /* Header: a tinted glass bar, hairline gradient as the lower edge. Zensical's
    modern variant already blurs what scrolls underneath; the tint keeps that.
-   Without backdrop-filter the bar stays opaque instead of see-through. */
+   Without backdrop-filter the bar stays opaque instead of see-through. The
+   lower edge is a hairline through which the gradient slowly flows. */
 .md-header {
   background: var(--neon-header-bg);
-  border-bottom: 1px solid transparent;
-  border-image: var(--neon-gradient) 1;
   box-shadow: none;
 }
 
@@ -63,6 +62,143 @@
     background: color-mix(in srgb, var(--neon-header-bg) 72%, transparent);
     -webkit-backdrop-filter: blur(16px) saturate(150%);
     backdrop-filter: blur(16px) saturate(150%);
+  }
+}
+
+.md-header::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 1px;
+  background: linear-gradient(90deg, var(--neon-pink), var(--neon-purple), var(--neon-cyan), var(--neon-purple), var(--neon-pink));
+  background-size: 200% 100%;
+  box-shadow: 0 0 10px var(--neon-glow);
+  animation: neon-header-flow 14s linear infinite;
+  pointer-events: none;
+}
+
+@keyframes neon-header-flow {
+  to {
+    background-position: 200% 0;
+  }
+}
+
+/* Logo: the orbit mark from partials/logo.html, one turn on hover. */
+.md-logo svg {
+  overflow: visible;
+  filter: drop-shadow(0 0 5px var(--neon-glow));
+  transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.md-logo:hover,
+.md-logo:focus-visible {
+  opacity: 1;
+}
+
+.md-logo:hover svg,
+.md-logo:focus-visible svg {
+  transform: rotate(180deg);
+}
+
+.neon-mark__orbit-a,
+.neon-mark__orbit-b {
+  fill: none;
+  stroke-width: 1.6;
+}
+
+.neon-mark__orbit-a {
+  stroke: var(--neon-purple);
+}
+
+.neon-mark__orbit-b {
+  stroke: var(--neon-cyan);
+}
+
+.neon-mark__comet {
+  fill: var(--neon-pink);
+  filter: drop-shadow(0 0 3px var(--neon-pink));
+}
+
+/* Site name in the gradient; the page title that slides in on scroll
+   (second topic) keeps the plain text colour. */
+.md-header__topic:first-child {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.md-header__topic:first-child .md-ellipsis {
+  background: var(--neon-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* Icon buttons (drawer, palette, search): round glass on hover. */
+.md-header__button.md-icon {
+  border-radius: 50%;
+  transition: background-color 0.2s, color 0.2s, box-shadow 0.2s, opacity 0.2s;
+}
+
+.md-header__button.md-icon:hover,
+.md-header__button.md-icon:focus-visible {
+  opacity: 1;
+  color: var(--neon-cyan);
+  background-color: color-mix(in srgb, var(--neon-purple) 16%, transparent);
+  box-shadow: 0 0 14px var(--neon-glow);
+}
+
+/* Search: glass pill with a gradient border, cyan icon, outlined shortcut.
+   Two background layers: the fill on the padding box, the gradient on the
+   border box, so it shows as the 1px border and a faint tint inside. */
+.md-search__button {
+  border: 1px solid transparent;
+  border-radius: 999px;
+  background:
+    linear-gradient(
+      color-mix(in srgb, var(--neon-header-bg) 88%, transparent),
+      color-mix(in srgb, var(--neon-header-bg) 88%, transparent)
+    ) padding-box,
+    var(--neon-gradient) border-box;
+  color: var(--md-default-fg-color--light);
+  transition: box-shadow 0.25s, color 0.25s;
+}
+
+.md-search__button:hover,
+.md-search__button:focus {
+  color: var(--md-default-fg-color);
+  background:
+    linear-gradient(
+      color-mix(in srgb, var(--neon-header-bg) 78%, transparent),
+      color-mix(in srgb, var(--neon-header-bg) 78%, transparent)
+    ) padding-box,
+    var(--neon-gradient) border-box;
+  box-shadow: 0 0 16px var(--neon-glow);
+}
+
+.md-search__button::before {
+  background-color: var(--neon-cyan);
+}
+
+.md-search__button::after {
+  top: 0.3rem;
+  padding: 0.1rem 0.3rem;
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.55rem;
+  color: var(--md-default-fg-color--light);
+  background: transparent;
+  border: 1px solid var(--neon-rule);
+  border-radius: 999px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .md-header::after {
+    animation: none;
+  }
+
+  .md-logo svg,
+  .md-header__button.md-icon,
+  .md-search__button {
+    transition: none;
   }
 }
 

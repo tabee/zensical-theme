@@ -1,7 +1,8 @@
 # zensical-theme
 
 Neon (cyberpunk) colours for [Zensical](https://zensical.org/): a glass
-header with a pink → purple → cyan hairline, gradient headings, cyan links
+header with an orbit mark, the site name in a pink → purple → cyan gradient
+and a hairline the gradient flows through, gradient headings, cyan links
 that glow pink on hover. Two variants that follow Zensical's colour scheme:
 deep purple with bright neon on `slate` (dark), pale lavender with the same
 hues deepened for contrast on `default` (light). Colours only, no layout
@@ -59,9 +60,13 @@ copied into your `docs/`.
 3. `zensical build` (or `serve`). The CSS ends up at
    `assets/stylesheets/neon.css` in the output.
 
+The header shows an orbit mark as logo (`overrides/partials/logo.html`, an
+inline SVG coloured by the style sheet). A `logo` in `[project.theme]` takes
+precedence, as in Zensical itself.
+
 Zensical allows one `custom_dir`. If you already have your own overrides,
-take `overrides/assets/` and `overrides/partials/neon-hero.html` into your
-folder and merge the blocks from `overrides/main.html` into your `main.html`.
+take `overrides/assets/` and `overrides/partials/` into your folder and merge
+the blocks from `overrides/main.html` into your `main.html`.
 
 ## Start page with animation
 

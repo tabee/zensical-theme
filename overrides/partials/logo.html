@@ -1,0 +1,15 @@
+{#
+  zensical-theme: the orbit mark used as logo in the header and the drawer.
+  Two crossed orbits and a comet, an echo of the attractor on the start page.
+  Coloured by neon.css (.neon-mark__*), so it follows the colour scheme. A
+  "logo" set in [project.theme] takes precedence, as in Zensical itself.
+#}
+{% if config.theme.logo %}
+  <img src="{{ config.theme.logo | url }}" alt="logo">
+{% else %}
+  <svg class="neon-mark" viewBox="0 0 24 24" aria-hidden="true">
+    <ellipse class="neon-mark__orbit-a" cx="12" cy="12" rx="10" ry="4.5" transform="rotate(-30 12 12)"/>
+    <ellipse class="neon-mark__orbit-b" cx="12" cy="12" rx="10" ry="4.5" transform="rotate(30 12 12)"/>
+    <circle class="neon-mark__comet" cx="20.9" cy="8.6" r="1.8"/>
+  </svg>
+{% endif %}
