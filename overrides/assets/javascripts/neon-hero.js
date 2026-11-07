@@ -350,6 +350,7 @@ function start(section) {
   });
 
   const wide = window.matchMedia("(min-width: 60em)");
+  const inner = section.querySelector(".neon-hero__inner");
   const resize = () => {
     const w = section.clientWidth;
     const h = section.clientHeight;
@@ -359,13 +360,28 @@ function start(section) {
     bloom.resolution.set(w, h);
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
-    // Wide layout: attractor right of the text, a bit above centre; narrow: behind it.
-    const halfWidth = Math.tan((camera.fov * Math.PI) / 360) * camera.position.z * camera.aspect;
-    group.position.set(wide.matches ? halfWidth * 0.5 : 0, wide.matches ? 0.08 : 0, 0);
-    const fit = Math.min(1, (w / h) * 0.9);
-    group.scale.setScalar(wide.matches ? Math.min(1, halfWidth * 0.42) : 0.85 * fit);
+    const halfHeight = Math.tan((camera.fov * Math.PI) / 360) * camera.position.z;
+    const halfWidth = halfHeight * camera.aspect;
+    if (wide.matches) {
+      // Wide layout: attractor right of the text, a bit above centre.
+      group.position.set(halfWidth * 0.5, 0.08, 0);
+      group.scale.setScalar(Math.min(1, halfWidth * 0.42));
+    } else {
+      // Narrow layout: attractor centred in the free space below the text
+      // (the CSS reserves it via padding-bottom on the hero).
+      const innerBottom = inner
+        ? inner.getBoundingClientRect().bottom - section.getBoundingClientRect().top
+        : h * 0.5;
+      const topPx = Math.min(Math.max(innerBottom, 0), h);
+      const regionHalf = ((h - topPx) / h) * halfHeight;
+      group.position.set(0, halfHeight * (1 - (topPx + h) / h), 0);
+      group.scale.setScalar(Math.max(0.3, Math.min(0.85 * halfWidth, 0.9 * regionHalf)));
+    }
+    if (reduced) composer.render();
   };
-  new ResizeObserver(resize).observe(section);
+  const observer = new ResizeObserver(resize);
+  observer.observe(section);
+  if (inner) observer.observe(inner);
   resize();
 
   const pointer = { x: 0, y: 0 };

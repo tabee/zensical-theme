@@ -116,10 +116,25 @@
 }
 
 /* Wide screens: text on the left, the attractor is placed to the right by
-   the script; on narrow screens it sits behind the text. */
+   the script. */
 @media (min-width: 60em) {
   .neon-hero__inner {
     padding-right: 46%;
+  }
+}
+
+/* Narrow screens: text on top, the attractor gets the space below it. The
+   bottom padding reserves that space; the script centres the attractor in
+   whatever is left between the text and the lower edge. */
+@media (max-width: 59.9375em) {
+  .neon-hero {
+    padding-bottom: 16rem;
+  }
+
+  .neon-hero__inner {
+    align-content: start;
+    min-height: 0;
+    padding: 3rem 1.2rem 0;
   }
 }
 

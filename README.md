@@ -94,7 +94,7 @@ comets racing along it. On the dark scheme they glow through a bloom pass; on
 the light scheme the lines multiply into the pale background like ink. The
 hero follows the palette toggle live. It orbits slowly and tilts with the
 pointer. On wide screens it sits right of the text,
-on narrow ones behind it. `prefers-reduced-motion` gets a single still frame,
+on narrow ones below it. `prefers-reduced-motion` gets a single still frame,
 off-screen or in a background tab nothing is rendered, without WebGL the
 dark background stays.
 
