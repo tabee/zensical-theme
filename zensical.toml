@@ -1,0 +1,51 @@
+# Preview site for zensical-theme. Run from the repo root:
+#   zensical serve
+# Your own project only needs the [project.theme] part below (README).
+[project]
+site_name = "zensical-theme"
+site_description = "Neon colours for Zensical"
+docs_dir = "example"
+site_dir = "site"
+nav = [{ "Preview" = "index.md" }]
+
+[project.theme]
+variant = "modern"
+# System fonts, no requests to Google Fonts.
+font = false
+# Template overrides and the style sheet live here.
+custom_dir = "overrides"
+features = [
+  "navigation.top",
+  "content.code.copy",
+  "content.tabs.link",
+]
+
+# Both colour schemes carry the neon colours: "slate" dark, "default" light.
+# The toggle lets you compare; a single palette works as well.
+[[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
+scheme = "slate"
+primary = "deep-purple"
+accent = "pink"
+toggle = { icon = "material/brightness-4", name = "Light" }
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
+scheme = "default"
+primary = "white"
+accent = "pink"
+toggle = { icon = "material/brightness-7", name = "Dark" }
+
+[project.plugins.search]
+
+[project.markdown_extensions]
+admonition = {}
+attr_list = {}
+tables = {}
+toc = { permalink = true }
+pymdownx.details = {}
+pymdownx.highlight = { anchor_linenums = true, line_spans = "__span", pygments_lang_class = true }
+pymdownx.inlinehilite = {}
+pymdownx.superfences = {}
+pymdownx.tabbed = { alternate_style = true }
+pymdownx.tasklist = { custom_checkbox = true }

@@ -1,0 +1,38 @@
+{#
+  zensical-theme: appends the neon style sheet after Zensical's own styles.
+  On the start page, and only if its front matter has a "hero:" key, the
+  animated neon hero is rendered above the content (block "hero" of base.html).
+  Everything else comes from base.html.
+#}
+{% extends "base.html" %}
+
+{# Zensical has no page.is_homepage; the start page is the one with the empty URL. #}
+{% set neon_hero = page.url == "" and page.meta and page.meta.hero %}
+
+{% block styles %}
+  {{ super() }}
+  <link rel="stylesheet" href="{{ 'assets/stylesheets/neon.css' | url }}">
+  {% if neon_hero %}
+    <link rel="stylesheet" href="{{ 'assets/stylesheets/neon-hero.css' | url }}">
+  {% endif %}
+{% endblock %}
+
+{% block hero %}
+  {% if neon_hero %}
+    {% include "partials/neon-hero.html" %}
+  {% endif %}
+{% endblock %}
+
+{% block scripts %}
+  {{ super() }}
+  {% if neon_hero %}
+    {# Bare specifier "three" for the vendored library and its addons. #}
+    <script type="importmap">
+      {"imports": {
+        "three": "{{ 'assets/javascripts/vendor/three/three.module.js' | url }}",
+        "three/addons/": "{{ 'assets/javascripts/vendor/three/addons/' | url }}"
+      }}
+    </script>
+    <script type="module" src="{{ 'assets/javascripts/neon-hero.js' | url }}"></script>
+  {% endif %}
+{% endblock %}

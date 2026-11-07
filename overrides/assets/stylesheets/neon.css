@@ -1,0 +1,95 @@
+/* zensical-theme: neon (cyberpunk) colours for Zensical, gradient pink ->
+   purple -> cyan. Colours only, no layout changes. Two variants, chosen by
+   Zensical's colour scheme: "slate" is deep purple with bright neon, "default"
+   is a pale lavender with the same hues deepened for contrast on white. The
+   shared rules below only use the variables, so each scheme sets them once. */
+[data-md-color-scheme="slate"] {
+  --neon-pink: #ff2bd6;
+  --neon-purple: #9d4dff;
+  --neon-cyan: #00e5ff;
+  --neon-gradient: linear-gradient(90deg, var(--neon-pink), var(--neon-purple), var(--neon-cyan));
+  --neon-glow: rgb(157 77 255 / 45%);
+  --neon-rule: rgb(157 77 255 / 50%);
+  --neon-text-glow: rgb(255 43 214 / 60%);
+  --neon-header-bg: #12091f;
+  --neon-link-hover: var(--neon-pink);
+  --md-hue: 270;
+  --md-default-bg-color: #0d0718;
+  --md-default-fg-color: #e9defc;
+  --md-code-bg-color: #160d2a;
+  --md-primary-fg-color: #1a0d33;
+  --md-accent-fg-color: var(--neon-pink);
+  --md-typeset-a-color: var(--neon-cyan);
+}
+
+[data-md-color-scheme="default"] {
+  --neon-pink: #d6007f;
+  --neon-purple: #6d28d9;
+  --neon-cyan: #0088a3;
+  --neon-gradient: linear-gradient(90deg, var(--neon-pink), var(--neon-purple), var(--neon-cyan));
+  --neon-glow: rgb(109 40 217 / 18%);
+  --neon-rule: rgb(109 40 217 / 35%);
+  --neon-text-glow: rgb(214 0 127 / 25%);
+  --neon-header-bg: #ffffff;
+  --neon-link-hover: var(--neon-pink);
+  --md-default-bg-color: #fbf9ff;
+  --md-default-fg-color: #1e1233;
+  --md-default-fg-color--light: rgb(30 18 51 / 70%);
+  --md-default-fg-color--lighter: rgb(30 18 51 / 40%);
+  --md-default-fg-color--lightest: rgb(30 18 51 / 10%);
+  --md-code-bg-color: #f2ecfd;
+  --md-code-fg-color: #3b1d6e;
+  /* Header: white with dark text; Material reads bg/fg from these two. */
+  --md-primary-fg-color: #ffffff;
+  --md-primary-bg-color: #1e1233;
+  --md-primary-bg-color--light: rgb(30 18 51 / 70%);
+  --md-accent-fg-color: var(--neon-pink);
+  --md-accent-fg-color--transparent: rgb(214 0 127 / 10%);
+  --md-typeset-a-color: var(--neon-cyan);
+}
+
+.md-header {
+  background: var(--neon-header-bg);
+  border-bottom: 2px solid transparent;
+  border-image: var(--neon-gradient) 1;
+  box-shadow: 0 0 18px var(--neon-glow);
+}
+
+.md-typeset h1 {
+  background: var(--neon-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  font-weight: 700;
+}
+
+.md-typeset h2 {
+  border-bottom: 1px solid var(--neon-rule);
+  color: var(--neon-pink);
+}
+
+.md-typeset a:hover {
+  color: var(--neon-link-hover);
+  text-shadow: 0 0 6px var(--neon-text-glow);
+}
+
+.md-typeset pre > code {
+  border-left: 3px solid var(--neon-purple);
+}
+
+/* Optional: knowledge graph plugin zensical-graph (v2). Only takes effect if
+   the plugin is used; its --zg-* variables pick up the neon colours.
+   Nodes by link count: many = pink, medium = cyan, few = purple. */
+.zg {
+  --zg-palette: var(--neon-pink), var(--neon-cyan), var(--neon-purple);
+  --zg-link: var(--neon-rule);
+  --zg-link-active: var(--neon-cyan);
+  --zg-label: var(--md-default-fg-color);
+  --zg-halo: var(--md-default-bg-color);
+  --zg-bg: var(--md-default-bg-color);
+  --zg-border: var(--neon-rule);
+}
+
+.zg-canvas {
+  box-shadow: 0 0 24px var(--neon-glow);
+}

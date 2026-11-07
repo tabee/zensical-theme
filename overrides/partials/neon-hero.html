@@ -1,0 +1,37 @@
+{#
+  Neon hero for the start page. Content comes from the front matter of the
+  page (key "hero"), falling back to site_name and site_description:
+
+    hero:
+      title: My notes            # optional, default site_name
+      text: One line about it.   # optional, default site_description
+      attractor: aizawa          # optional, default aizawa (the sphere). Also: thomas,
+                                 # halvorsen, dadras, lorenz, "random", or a list to pick from
+      buttons:                   # optional, first one is highlighted
+        - text: Start
+          href: start/           # URL relative to the site root
+
+  "hero: true" is enough for the animation with the defaults. Colours follow
+  the colour scheme of the page (dark on slate, light on default).
+#}
+{% set hero = page.meta.hero if page.meta.hero is mapping else {} %}
+{% set attractor = hero.attractor | default("aizawa") %}
+{% if attractor is not string %}{% set attractor = attractor | join(",") %}{% endif %}
+<section class="neon-hero" data-attractor="{{ attractor }}">
+  <canvas class="neon-hero__canvas" aria-hidden="true"></canvas>
+  <div class="neon-hero__inner md-grid">
+    <h1 class="neon-hero__title">{{ hero.title | default(config.site_name) }}</h1>
+    {% set text = hero.text | default(config.site_description) %}
+    {% if text %}
+      <p class="neon-hero__text">{{ text }}</p>
+    {% endif %}
+    {% if hero.buttons %}
+      <p class="neon-hero__buttons">
+        {% for button in hero.buttons %}
+          <a class="neon-hero__button{% if loop.first %} neon-hero__button--primary{% endif %}"
+             href="{{ button.href | url }}">{{ button.text }}</a>
+        {% endfor %}
+      </p>
+    {% endif %}
+  </div>
+</section>

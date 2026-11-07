@@ -1,0 +1,130 @@
+/* zensical-theme: neon hero on the start page (partials/neon-hero.html).
+   Rendered above md-main, full width. Colours come from neon.css (per colour
+   scheme); only the hero background and the button text colour are set here.
+   The canvas (neon-hero.js) reads the scheme from the body and follows it. */
+.neon-hero {
+  --neon-hero-bg: #fbf9ff;
+  --neon-hero-fg: var(--md-default-fg-color);
+  --neon-hero-button-fg: #ffffff;
+  --neon-hero-shade: rgb(109 40 217 / 12%);
+  position: relative;
+  overflow: hidden;
+  min-height: min(calc(100vh - 2.4rem), 44rem);
+  color: var(--neon-hero-fg);
+  background:
+    radial-gradient(ellipse 70% 60% at 68% 45%, var(--neon-hero-shade), transparent 70%),
+    var(--neon-hero-bg);
+}
+
+[data-md-color-scheme="slate"] .neon-hero {
+  --neon-hero-bg: #07040f;
+  --neon-hero-button-fg: #07040f;
+  --neon-hero-shade: rgb(157 77 255 / 18%);
+}
+
+/* The hero carries the title; the page's own first heading would repeat it. */
+.neon-hero ~ .md-main .md-content__inner > h1:first-of-type {
+  display: none;
+}
+
+/* Thin gradient line as the edge towards the content. */
+.neon-hero::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 2px;
+  background: var(--neon-gradient);
+  box-shadow: 0 0 18px var(--neon-glow);
+}
+
+.neon-hero__canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.neon-hero__inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  align-content: center;
+  min-height: inherit;
+  padding: 4rem 1.2rem 5rem;
+}
+
+/* Two classes: Material's palette colours "[data-md-color-scheme] h1". */
+.neon-hero .neon-hero__title {
+  margin: 0 0 1rem;
+  font-size: clamp(2.2rem, 6.5vw, 4.4rem);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.02em;
+  background: var(--neon-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.neon-hero__text {
+  max-width: 34rem;
+  margin: 0 0 2rem;
+  font-size: clamp(1rem, 2.2vw, 1.3rem);
+  line-height: 1.5;
+  color: var(--neon-hero-fg);
+  opacity: 0.85;
+}
+
+.neon-hero__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+  margin: 0;
+}
+
+.neon-hero__button {
+  display: inline-block;
+  padding: 0.7rem 1.6rem;
+  border: 1px solid var(--neon-rule);
+  border-radius: 999px;
+  font-weight: 700;
+  color: var(--neon-hero-fg);
+  text-decoration: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.neon-hero__button:hover,
+.neon-hero__button:focus-visible {
+  color: var(--neon-hero-fg);
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 20px var(--neon-glow);
+  transform: translateY(-1px);
+}
+
+.neon-hero__button--primary {
+  border-color: transparent;
+  background: var(--neon-gradient);
+  color: var(--neon-hero-button-fg);
+  box-shadow: 0 0 24px var(--neon-text-glow);
+}
+
+.neon-hero__button--primary:hover,
+.neon-hero__button--primary:focus-visible {
+  color: var(--neon-hero-button-fg);
+  box-shadow: 0 0 32px var(--neon-text-glow);
+}
+
+/* Wide screens: text on the left, the attractor is placed to the right by
+   the script; on narrow screens it sits behind the text. */
+@media (min-width: 60em) {
+  .neon-hero__inner {
+    padding-right: 46%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .neon-hero__button {
+    transition: none;
+  }
+}
